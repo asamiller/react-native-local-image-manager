@@ -6,7 +6,7 @@ A React Native module for downloading and resizing images natively.
 2. Add `RCTLocalImageManager.m` to your Xcode project.
 
 ### Usage
-```
+```javascript
 var { NativeModules } = require('react-native');
 var LocalImageManager = require('NativeModules').LocalImageManager;
 
