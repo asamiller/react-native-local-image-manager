@@ -11,6 +11,12 @@
 #import "RCTBridgeModule.h"
 #import "RCTUtils.h"
 
+@interface LocalImageManager : NSObject <RCTBridgeModule>
+- (void)resize:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback;
+- (void)remove:(NSString *)pathFileToDelete callback:(RCTResponseSenderBlock)callback;
+- (void)download:(NSDictionary *)input callback:(RCTResponseSenderBlock)callback;
+@end
+
 @implementation LocalImageManager
 
 
@@ -66,14 +72,6 @@ RCT_EXPORT_METHOD(resize:(NSDictionary *)input callback:(RCTResponseSenderBlock)
 RCT_EXPORT_METHOD(remove:(NSString *)pathFileToDelete callback:(RCTResponseSenderBlock)callback)
 {
 	[[NSFileManager defaultManager] removeItemAtPath:pathFileToDelete error:nil];
-}
-
-- (NSString *)getDestLocation:(NSString *)filename
-{
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-	NSString *documentsDirectory = [paths objectAtIndex:0];
-	
-	return [documentsDirectory stringByAppendingPathComponent:filename];
 }
 
 // Available as NativeModules.LocalImageManager.download
