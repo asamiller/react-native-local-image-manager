@@ -12,7 +12,9 @@ var {
   Image,
   View,
   TouchableOpacity,
+  CameraRoll,
 } = React;
+var logError = require('logError');
 
 var LocalImageManager = require('NativeModules').LocalImageManager;
 
@@ -73,23 +75,26 @@ var ExampleProject = React.createClass({
   },
 
   resizeImage () {
-    if (!this.state.imageResult) throw new Error('no image downloaded');
+    // grab the first camera roll image
+    CameraRoll.getPhotos({ first: 1 }, (path) => {
+      var image = path.edges[0].node.image.uri;
 
-    var options = {
-      uri: this.state.imageResult,
-      width: 100,
-      height: 100,
-      quality: 0.5,
-      filename: 'small.jpg',
-    };
+      var options = {
+        uri: image,
+        width: 200,
+        height: 200,
+        quality: 0.5,
+        filename: 'small.jpg',
+      };
 
-    console.log(options);
+      // resize the image
+      LocalImageManager.resize(options, (results)=>{
+        // results is the filesystem path of the resized image
+        console.log(results);
+        this.setState({ resizeResult: results });
+      });
 
-    LocalImageManager.resize(options, (results) => {
-      // results is the filesystem path of the resized image
-      console.log(results);
-      this.setState({ resizeResult: results });
-    });    
+    }, logError);
   }
 });
 
