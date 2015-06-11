@@ -53,7 +53,7 @@ var ExampleProject = React.createClass({
 
         <TouchableOpacity onPress={this.resizeImage}>
           <Text style={styles.welcome}>
-            Resize Image
+            Resize Camera Roll Image
           </Text>
         </TouchableOpacity>
         {resizeElement}
