@@ -41,41 +41,36 @@ RCT_EXPORT_METHOD(resize:(NSDictionary *)input callback:(RCTResponseSenderBlock)
 	
 	ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
 	[library assetForURL:assetUrl
-			 resultBlock:^(ALAsset *asset) {
-				 // grab the image from the asset
-				 ALAssetRepresentation *rep = [asset defaultRepresentation];
-				 CGImageRef imageRef = [rep fullResolutionImage];
-				 
-				 // make a UIImage out of it, so we can draw it into our context
-				 UIImage *sourceImage = [UIImage imageWithCGImage:imageRef];
-				 
-#if 1
-				 CGRect rect = CGRectMake(0, 0, width, height);
-				 // make a new graphics context (think layer)
-				 UIGraphicsBeginImageContextWithOptions(rect.size, YES, 1.0f);
-				 // draw our source image to size in the layer
-				 [sourceImage drawInRect:rect];
-				 UIImage * resizedImage = UIGraphicsGetImageFromCurrentImageContext();
-				 UIGraphicsEndImageContext();
-				 
-				 // convert the image to DATA (and jpeg it to the requested quality)
-				 NSData *data = UIImageJPEGRepresentation(resizedImage, quality);
-#else
-				 NSData *data = UIImageJPEGRepresentation(sourceImage, quality);
-#endif
-				 
-				 
-				 // write it to disk
-				 NSString *path = [self getDestLocation:outputName];
-				 [data writeToFile:path atomically:YES];
-				 
-				 // return the location we specified
-				 callback(@[path]);
-			 }
-			failureBlock:^(NSError *error) {
-				callback(@[RCTMakeError(@"Error resizing image", nil, nil)]);
-			}
-	 ];
+		 resultBlock:^(ALAsset *asset) {
+			 // grab the image from the asset
+			 ALAssetRepresentation *rep = [asset defaultRepresentation];
+			 CGImageRef imageRef = [rep fullResolutionImage];
+			 
+			 // make a UIImage out of it, so we can draw it into our context
+			 UIImage *sourceImage = [UIImage imageWithCGImage:imageRef];
+			 
+			 CGRect rect = CGRectMake(0, 0, width, height);
+			 // make a new graphics context (think layer)
+			 UIGraphicsBeginImageContextWithOptions(rect.size, YES, 1.0f);
+			 // draw our source image to size in the layer
+			 [sourceImage drawInRect:rect];
+			 UIImage * resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+			 UIGraphicsEndImageContext();
+			 
+			 // convert the image to DATA (and jpeg it to the requested quality)
+			 NSData *data = UIImageJPEGRepresentation(resizedImage, quality);
+			 
+			 // write it to disk
+			 NSString *path = [self getDestLocation:outputName];
+			 [data writeToFile:path atomically:YES];
+			 
+			 // return the location we specified
+			 callback(@[path]);
+		 }
+		failureBlock:^(NSError *error) {
+			callback(@[RCTMakeError(@"Error resizing image", nil, nil)]);
+		}
+	];
 }
 
 // Available as NativeModules.LocalImageManager.remove
