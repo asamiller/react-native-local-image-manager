@@ -1,6 +1,6 @@
 {
   "name": "react-native-local-image-manager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A React Native module for downloading and resizing local images.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
