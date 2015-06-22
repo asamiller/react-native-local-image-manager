@@ -47,7 +47,7 @@ RCT_EXPORT_METHOD(resize:(NSDictionary *)input callback:(RCTResponseSenderBlock)
 			 CGImageRef imageRef = [rep fullResolutionImage];
 			 
 			 // make a UIImage out of it, so we can draw it into our context
-			 UIImage *sourceImage = [UIImage imageWithCGImage:imageRef];
+			 UIImage *sourceImage = [UIImage imageWithCGImage:imageRef scale:1.0f orientation:[rep orientation]];
 			 
 			 CGRect rect = CGRectMake(0, 0, width, height);
 			 // make a new graphics context (think layer)
